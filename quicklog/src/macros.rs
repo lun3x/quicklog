@@ -58,6 +58,10 @@ macro_rules! log {
   ($lvl:expr, $static_str:literal, $($args:tt)*) => {
     $crate::try_log!($lvl, $static_str, $($args)*).unwrap_or(())
   };
+
+  ($lvl:expr, $($args:tt)*) => {
+    $crate::try_log!($lvl, $static_str, $($args)*).unwrap_or(())
+  };
 }
 
 /// Checks if the current level we are trying to log is enabled by checking
@@ -100,7 +104,8 @@ macro_rules! try_log {
     if $crate::is_level_enabled!($lvl) {
       use $crate::{Log, make_container};
 
-      let log_line = $crate::lazy_format::lazy_format!("[{}]\t{}", $lvl, $static_str);
+      let log_line = $crate::lazy_format::lazy_format!($static_str);
+      let log_line = $crate::lazy_format::lazy_format!("[{}]\t{}", $lvl, log_line);
 
       $crate::logger().log(make_container!(log_line))
     } else {
