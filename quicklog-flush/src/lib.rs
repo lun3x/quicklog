@@ -10,6 +10,7 @@
 //! use quicklog_flush::Flush;
 //! # use quicklog_flush::stdout_flusher::StdoutFlusher;
 //! # use std::collections::VecDeque;
+//! # use std::time::SystemTime;
 //! # fn serialize_into_string(item: String) -> String { item }
 //! # struct Quicklog;
 //! impl Quicklog {
@@ -17,19 +18,24 @@
 //!         # let mut flusher = StdoutFlusher::new();
 //!         # let mut queue = VecDeque::new();
 //!         # queue.push_back(String::from("Hello, world!"));
+//!         # let log_time = SystemTime::now();
 //!         while let Some(item) = queue.pop_front() {
 //!             let log_string = serialize_into_string(item);
 //!             // flusher implements `Flush` trait
-//!             flusher.flush_one(log_string);
+//!             flusher.flush_one(log_string, log_time);
 //!         }
 //!     }
 //! }
 //! ```
 
+use std::time::SystemTime;
+
 /// Flushes to a file
 pub mod file_flusher;
 /// No-op Flush, does nothing
 pub mod noop_flusher;
+/// Flushes to a rolling log gile
+pub mod rolling_file_flusher;
 /// Flushes to stdout through `print!` macro
 pub mod stdout_flusher;
 
@@ -39,5 +45,5 @@ pub mod stdout_flusher;
 pub trait Flush {
     /// Handles a string from another thread, and potentially performs I/O
     /// operations such as writing to a file or to stdout
-    fn flush_one(&mut self, display: String);
+    fn flush_one(&mut self, display: String, log_time: SystemTime);
 }

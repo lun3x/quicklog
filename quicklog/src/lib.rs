@@ -352,14 +352,12 @@ impl Log for Quicklog {
                     .dequeue()
         } {
             Some((time_logged, disp)) => {
-                let log_line = format!(
-                    "[{:?}]{}\n",
-                    self.clock
-                        .compute_system_time_from_instant(time_logged)
-                        .expect("Unable to get time from instant"),
-                    disp
-                );
-                self.flusher.flush_one(log_line);
+                let datetime = self
+                    .clock
+                    .compute_system_time_from_instant(time_logged)
+                    .expect("Unable to get time from instant");
+                let log_line = format!("[{datetime:?}]{disp}\n");
+                self.flusher.flush_one(log_line, datetime.into());
                 Ok(())
             }
             None => Err(FlushError::Empty),
@@ -369,7 +367,7 @@ impl Log for Quicklog {
 
 #[cfg(test)]
 mod tests {
-    use std::{str::from_utf8, sync::Mutex};
+    use std::{str::from_utf8, sync::Mutex, time::SystemTime};
 
     use quicklog_flush::Flush;
 
@@ -390,7 +388,7 @@ mod tests {
     }
 
     impl Flush for VecFlusher {
-        fn flush_one(&mut self, display: String) {
+        fn flush_one(&mut self, display: String, _time: SystemTime) {
             self.vec.push(display);
         }
     }

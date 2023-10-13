@@ -12,3 +12,6 @@ readme = "../README.md"
 
 [badges]
 maintenance = { status = "actively-developed" }
+
+[dependencies]
+time = "0.3"

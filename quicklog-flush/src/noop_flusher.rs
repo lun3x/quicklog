@@ -1,3 +1,5 @@
+use std::time::SystemTime;
+
 use crate::Flush;
 
 pub struct NoopFlusher;
@@ -15,5 +17,5 @@ impl Default for NoopFlusher {
 }
 
 impl Flush for NoopFlusher {
-    fn flush_one(&mut self, _display: String) {}
+    fn flush_one(&mut self, _display: String, _log_time: SystemTime) {}
 }

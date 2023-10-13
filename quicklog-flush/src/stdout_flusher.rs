@@ -1,3 +1,5 @@
+use std::time::SystemTime;
+
 use crate::Flush;
 
 /// Flushes into stdout
@@ -16,7 +18,7 @@ impl Default for StdoutFlusher {
 }
 
 impl Flush for StdoutFlusher {
-    fn flush_one(&mut self, display: String) {
+    fn flush_one(&mut self, display: String, _log_time: SystemTime) {
         print!("{}", display);
     }
 }

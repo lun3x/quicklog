@@ -1,6 +1,7 @@
 use std::{
     fs::OpenOptions,
     io::{LineWriter, Write},
+    time::SystemTime,
 };
 
 use crate::Flush;
@@ -16,7 +17,7 @@ impl FileFlusher {
 }
 
 impl Flush for FileFlusher {
-    fn flush_one(&mut self, display: String) {
+    fn flush_one(&mut self, display: String, _log_time: SystemTime) {
         match OpenOptions::new().create(true).append(true).open(self.0) {
             Ok(file) => {
                 let mut writer = LineWriter::new(file);
