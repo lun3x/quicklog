@@ -103,15 +103,17 @@ macro_rules! try_log {
   // === no args
   ($lvl:expr, $static_str:literal) => {{
     if $crate::is_level_enabled!($lvl) {
-      use $crate::{Log, make_container};
+      use $crate::{Log};
 
-      if $crate::macros::is_module_path_enabled() {
+      let log_line: std::boxed::Box<dyn core::fmt::Display> = if $crate::macros::is_module_path_enabled() {
         let log_line = $crate::lazy_format::lazy_format!("[{}][{}]\t{}", $lvl, module_path!(), $static_str);
-        $crate::logger().log(make_container!(log_line))
+        $crate::make_container!(log_line)
       } else {
         let log_line = $crate::lazy_format::lazy_format!("[{}]\t{}", $lvl, $static_str);
-        $crate::logger().log(make_container!(log_line))
-      }
+        $crate::make_container!(log_line)
+      };
+
+      $crate::logger().log(log_line)
     } else {
       Ok(())
     }
@@ -128,23 +130,25 @@ macro_rules! try_log {
   ($lvl:expr, $static_str:literal @@ {{ $(,)* $($args:expr),* }} @ ($($prefix:tt)*) ($([$($field:tt)*])*)) => {
     $crate::paste::paste! {{
       if $crate::is_level_enabled!($lvl) {
-        use $crate::{Log, make_container};
+        use $crate::{Log};
 
         // allow unused_parens for case with 1 single field
         #[allow(unused_parens)]
         let ($([<$($field)*>]),*) = ($(($args).to_owned()),*);
 
-        if $crate::macros::is_module_path_enabled() {
+        let log_line: std::boxed::Box<dyn core::fmt::Display> = if $crate::macros::is_module_path_enabled() {
           let log_line = $crate::lazy_format::make_lazy_format!(|f| {
             write!(f, concat!("[{}][{}]\t", $static_str), $lvl, module_path!(), $([<$($field)*>]),*)
           });
-          $crate::logger().log(make_container!(log_line))
+          $crate::make_container!(log_line)
         } else {
           let log_line = $crate::lazy_format::make_lazy_format!(|f| {
             write!(f, concat!("[{}]\t", $static_str), $lvl, $([<$($field)*>]),*)
           });
-          $crate::logger().log(make_container!(log_line))
-        }
+          $crate::make_container!(log_line)
+        };
+
+        $crate::logger().log(log_line)
       } else {
         Ok(())
       }
