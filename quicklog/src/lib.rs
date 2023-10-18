@@ -210,7 +210,7 @@ use quanta::Instant;
 use serialize::buffer::{Buffer, BUFFER};
 use std::fmt::Display;
 
-use quicklog_clock::{quanta::QuantaClock, Clock};
+use quicklog_clock::{quanta::QuantaClock, Clock, SecondsFormat};
 use quicklog_flush::{file_flusher::FileFlusher, Flush};
 
 /// re-export of crates, for use in macros
@@ -356,7 +356,10 @@ impl Log for Quicklog {
                     .clock
                     .compute_system_time_from_instant(time_logged)
                     .expect("Unable to get time from instant");
-                let log_line = format!("{}  {disp}\n", datetime.to_rfc3339());
+                let log_line = format!(
+                    "{}  {disp}\n",
+                    datetime.to_rfc3339_opts(SecondsFormat::Micros, true)
+                );
                 self.flusher.flush_one(log_line, datetime.into());
                 Ok(())
             }

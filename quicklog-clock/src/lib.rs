@@ -33,6 +33,8 @@ use chrono::{DateTime, OutOfRangeError, Utc};
 
 pub mod quanta;
 
+pub use chrono::SecondsFormat;
+
 pub trait Clock {
     /// Returns current tsc instant
     fn get_instant(&self) -> Instant;
