@@ -106,10 +106,10 @@ macro_rules! try_log {
       use $crate::{Log};
 
       let log_line: std::boxed::Box<dyn core::fmt::Display> = if $crate::macros::is_module_path_enabled() {
-        let log_line = $crate::lazy_format::lazy_format!("[{}][{}]\t{}", $lvl, module_path!(), $static_str);
+        let log_line = $crate::lazy_format::lazy_format!("{} {}:\t{}", $lvl, module_path!(), $static_str);
         $crate::make_container!(log_line)
       } else {
-        let log_line = $crate::lazy_format::lazy_format!("[{}]\t{}", $lvl, $static_str);
+        let log_line = $crate::lazy_format::lazy_format!("{}:\t{}", $lvl, $static_str);
         $crate::make_container!(log_line)
       };
 
@@ -138,12 +138,12 @@ macro_rules! try_log {
 
         let log_line: std::boxed::Box<dyn core::fmt::Display> = if $crate::macros::is_module_path_enabled() {
           let log_line = $crate::lazy_format::make_lazy_format!(|f| {
-            write!(f, concat!("[{}][{}]\t", $static_str), $lvl, module_path!(), $([<$($field)*>]),*)
+            write!(f, concat!("{} {}:\t", $static_str), $lvl, module_path!(), $([<$($field)*>]),*)
           });
           $crate::make_container!(log_line)
         } else {
           let log_line = $crate::lazy_format::make_lazy_format!(|f| {
-            write!(f, concat!("[{}]\t", $static_str), $lvl, $([<$($field)*>]),*)
+            write!(f, concat!("{}:\t", $static_str), $lvl, $([<$($field)*>]),*)
           });
           $crate::make_container!(log_line)
         };

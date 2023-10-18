@@ -356,7 +356,7 @@ impl Log for Quicklog {
                     .clock
                     .compute_system_time_from_instant(time_logged)
                     .expect("Unable to get time from instant");
-                let log_line = format!("[{datetime:?}]{disp}\n");
+                let log_line = format!("{}  {disp}\n", datetime.to_rfc3339());
                 self.flusher.flush_one(log_line, datetime.into());
                 Ok(())
             }
