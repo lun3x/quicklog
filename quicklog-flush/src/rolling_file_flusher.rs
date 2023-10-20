@@ -31,7 +31,7 @@ impl RollingFileFlusher {
             .format(&format)
             .expect("unable to format OffsetDateTime");
         let dir = PathBuf::from(dir.as_ref());
-        let path = dir.join(format!("{prefix}.{date}.log"));
+        let path = dir.join(format!("{prefix}.log.{date}"));
 
         match OpenOptions::new().create(true).append(true).open(&path) {
             Ok(file) => Self {
