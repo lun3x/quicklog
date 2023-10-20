@@ -1,6 +1,6 @@
 [package]
 name = "quicklog"
-version = "0.1.18"
+version = "0.1.19"
 edition = "2021"
 description = "fast logging in Rust"
 documentation = "https://docs.rs/quicklog"
@@ -33,8 +33,8 @@ release_max_level_trace = []
 
 [dependencies]
 lazy_format = "2.0.0"
-quicklog-clock = { path = "../quicklog-clock", version = "0.1.3" }
-quicklog-flush = { path = "../quicklog-flush", version = "0.1.3" }
+quicklog-clock = { path = "../quicklog-clock", version = "0.1.4" }
+quicklog-flush = { path = "../quicklog-flush", version = "0.1.4" }
 quanta = "0.10.1"
 once_cell = "1.17.1"
 cfg-if = "1.0.0"
