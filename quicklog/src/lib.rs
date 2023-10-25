@@ -257,6 +257,8 @@ static mut RECEIVER: OnceCell<Receiver> = OnceCell::new();
 /// Log is the base trait that Quicklog will implement.
 /// Flushing and formatting is deferred while logging.
 pub trait Log {
+    /// Checks if there are any pending log lines to flush
+    fn needs_flush(&mut self) -> bool;
     /// Dequeues a single line from logging queue and passes it to Flusher
     fn flush_one(&mut self) -> RecvResult;
     /// Enqueues a single line onto logging queue
@@ -364,6 +366,15 @@ impl Log for Quicklog {
                 Ok(())
             }
             None => Err(FlushError::Empty),
+        }
+    }
+
+    fn needs_flush(&mut self) -> bool {
+        unsafe {
+            RECEIVER
+                    .get_mut()
+                    .expect("RECEIVER is not initialized, `Quicklog::init()` needs to be called at the entry point of your application")
+                    .ready()
         }
     }
 }
