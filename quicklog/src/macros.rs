@@ -383,15 +383,6 @@ macro_rules! flush_all {
     };
 }
 
-/// Checks if any log lines have been queued since the last flush.
-#[macro_export]
-macro_rules! needs_flush {
-    () => {
-        use $crate::Log;
-        $crate::logger().needs_flush()
-    };
-}
-
 /// Trace level log
 #[macro_export]
 macro_rules! trace {

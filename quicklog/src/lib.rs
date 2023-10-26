@@ -265,6 +265,11 @@ pub trait Log {
     fn log(&self, display: Box<dyn Display>) -> SendResult;
 }
 
+/// Checks if any log lines have been queued since the last flush.
+pub fn needs_flush() -> bool {
+    crate::logger().needs_flush()
+}
+
 /// Errors that can be presented when flushing
 #[derive(Debug)]
 pub enum FlushError {
