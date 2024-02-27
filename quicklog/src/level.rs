@@ -94,13 +94,13 @@ impl FromStr for LevelFilter {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.to_uppercase().as_str() {
-            "TRC" => Ok(Self::Trace),
-            "DBG" => Ok(Self::Debug),
-            "INF" => Ok(Self::Info),
-            "WRN" => Ok(Self::Warn),
-            "ERR" => Ok(Self::Error),
+            "TRACE" => Ok(Self::Trace),
+            "DEBUG" => Ok(Self::Debug),
+            "INFO" => Ok(Self::Info),
+            "WARN" => Ok(Self::Warn),
+            "ERROR" => Ok(Self::Error),
             "OFF" => Ok(Self::Off),
-            "EVT" => Ok(Self::Event),
+            "EVENT" => Ok(Self::Event),
             _ => Err(LogLevelParseError()),
         }
     }
