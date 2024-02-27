@@ -16,7 +16,12 @@ fn main() {
     init!();
     with_flush!(StdoutFlusher);
 
+    quicklog::level::set_max_level(quicklog::level::LevelFilter::Trace);
+
     trace!("hello world! {} {} {}", 2, 3, 4);
+
+    quicklog::level::set_max_level(quicklog::level::LevelFilter::Info);
+
     trace!("hello, world");
     debug!("hello world! {}", 2);
     info!("hello world! {}", 2);
