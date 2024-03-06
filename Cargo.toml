@@ -1,6 +1,8 @@
 [workspace]
+resolver = "2"
 members = [
   "quicklog",
   "quicklog-clock",
-  "quicklog-flush"
+  "quicklog-flush",
+  "quicklog-macros",
 ]
